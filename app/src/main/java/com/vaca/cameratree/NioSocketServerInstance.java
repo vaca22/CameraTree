@@ -42,7 +42,7 @@ public class NioSocketServerInstance {
         try {
             NioSocketServer nioSocketServer = NioSocketServer.getInit();
             nioSocketServer.setOnConnectedListener(onConnectedListener);
-            nioSocketServer.init(9999);
+            nioSocketServer.init(13207);
         } catch (IOException e) {
             e.printStackTrace();
         }
