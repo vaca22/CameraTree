@@ -164,7 +164,7 @@ public class NioSocketServer {
                                 message = ms;
                             }
                             if (!message.trim().equals("server_connection")&&message.trim().indexOf("server_connection")==-1) {
-                                onConnectedListener.onReceivedMessage(host + ":" + port, message.trim());
+                                onConnectedListener.onReceivedMessage( port, message.trim());
                             }
                         } catch (Exception e) {
                             // 客户端非正常关闭
@@ -202,6 +202,6 @@ public class NioSocketServer {
 
         void onDisconnected(String address);
 
-        void onReceivedMessage(String address, String msg);
+        void onReceivedMessage(int port, String msg);
     }
 }

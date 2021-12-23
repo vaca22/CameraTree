@@ -20,13 +20,12 @@ public class NioSocketServerInstance {
         }
 
         @Override
-        public void onReceivedMessage(String address, String msg) {
+        public void onReceivedMessage(int port, String msg) {
             //线程处理并发
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e("客户端消息:", address);
-                    receivedMessage(address, msg);
+                    receivedMessage(port, msg);
                 }
             }).start();
         }
@@ -42,7 +41,7 @@ public class NioSocketServerInstance {
         }
     }
 
-    public void receivedMessage(String host, String msg) {
+    public void receivedMessage(int port, String msg) {
         try {
             Log.e(msg, msg);
         } catch (Exception e) {
