@@ -27,7 +27,7 @@ public class NioSocketServerInstance {
                 @Override
                 public void run() {
                     if(tcpReceiveMsg!=null){
-                        tcpReceiveMsg.receive (port,msg);
+                        tcpReceiveMsg.receive (""+port,msg);
                     }
 
                 }
