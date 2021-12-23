@@ -11,13 +11,11 @@ public class NioSocketServerInstance {
     private NioSocketServer.OnConnectionListener onConnectedListener = new NioSocketServer.OnConnectionListener() {
         @Override
         public void onConnected(String address) {
-
-            Log.e("客户端连接:" , address);
+            Log.e("客户端连接:", address);
         }
 
         @Override
         public void onDisconnected(String address) {
-
             Log.e("客户端断开:", address);
         }
 
@@ -27,12 +25,8 @@ public class NioSocketServerInstance {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
-
-                  Log.e("客户端消息:" ,address);
+                    Log.e("客户端消息:", address);
                     receivedMessage(address, msg);
-
-
                 }
             }).start();
         }
@@ -50,7 +44,7 @@ public class NioSocketServerInstance {
 
     public void receivedMessage(String host, String msg) {
         try {
-           Log.e(msg,msg);
+            Log.e(msg, msg);
         } catch (Exception e) {
             e.printStackTrace();
         }
