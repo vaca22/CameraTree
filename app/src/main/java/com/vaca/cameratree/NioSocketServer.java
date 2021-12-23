@@ -68,6 +68,20 @@ public class NioSocketServer {
         }).start();
     }
 
+    /**
+     * byteBuffer 转 byte数组
+     * @param buffer
+     * @return
+     */
+    public static byte[] bytebuffer2ByteArray(ByteBuffer buffer) {
+        buffer.flip();
+        int len= buffer.remaining();
+        byte [] bytes=new byte[len];
+        buffer.get(bytes,0,len);
+        return bytes;
+    }
+
+
     @SuppressWarnings("static-access")
     public void listen() throws IOException {
         while (true) {
@@ -137,35 +151,9 @@ public class NioSocketServer {
                                 map.remove(host + ":" + port);
                                 break;
                             }
-                            Integer[] tt = new Integer[count];
-                            for (int i = 0; i < count; i++) {
-                                int t = buffer.get(i);
-                                tt[i] = t >= 0 ? t : 256 + t;
-                            }
-                            String ms = "";
-                            for (int i = 0; i < tt.length; i++) {
-                                String a = tt[i].toHexString(tt[i]);
-                                if (a.length() == 1) {
-                                    a = "0" + a;
-                                }
-                                ms += a;
-                            }
-                            String startStr = "";
-                            try {
-                                startStr = ms.substring(0, 2);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            byte[] data = buffer.array();
+                            byte[] data = bytebuffer2ByteArray(buffer);
                             buffer.clear();
-                            String message = new String(data);
-                            if (startStr.equals("EF") || startStr.equals("ef") || startStr.equals("FE")
-                                    || startStr.equals("fe")) {
-                                message = ms;
-                            }
-                            if (!message.trim().equals("server_connection")&&message.trim().indexOf("server_connection")==-1) {
-                                onConnectedListener.onReceivedMessage( port, message.trim());
-                            }
+                            onConnectedListener.onReceivedMessage(port, data);
                         } catch (Exception e) {
                             // 客户端非正常关闭
                             channel.close();
@@ -202,6 +190,6 @@ public class NioSocketServer {
 
         void onDisconnected(String address);
 
-        void onReceivedMessage(int port, String msg);
+        void onReceivedMessage(int port, byte[] msg);
     }
 }

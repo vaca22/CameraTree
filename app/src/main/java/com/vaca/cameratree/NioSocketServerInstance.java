@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class NioSocketServerInstance {
 
+    TcpReceiveMsg tcpReceiveMsg=null;
 
     private NioSocketServer.OnConnectionListener onConnectedListener = new NioSocketServer.OnConnectionListener() {
         @Override
@@ -20,12 +21,15 @@ public class NioSocketServerInstance {
         }
 
         @Override
-        public void onReceivedMessage(int port, String msg) {
+        public void onReceivedMessage(int port, byte[] msg) {
             //线程处理并发
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    receivedMessage(port, msg);
+                    if(tcpReceiveMsg!=null){
+                        tcpReceiveMsg.receive (port,msg);
+                    }
+
                 }
             }).start();
         }
@@ -41,12 +45,5 @@ public class NioSocketServerInstance {
         }
     }
 
-    public void receivedMessage(int port, String msg) {
-        try {
-            Log.e(msg, msg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
